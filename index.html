@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CineVerse</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            background: #f2f2f2;
+        }
+        header {
+            background: #222;
+            color: white;
+            text-align: center;
+            padding: 30px;
+        }
+        header h1 {
+            margin: 0;
+            font-size: 40px;
+        }
+        header p {
+            font-size: 18px;
+        }
+        #searchInput {
+            width: 320px;
+            max-width: 85%;
+            padding: 13px;
+            border: none;
+            border-radius: 25px;
+            margin-top: 15px;
+            font-size: 16px;
+        }
+        button {
+            padding: 11px 20px;
+            border: none;
+            border-radius: 22px;
+            cursor: pointer;
+            font-size: 15px;
+            margin: 10px 5px;
+        }
+        .add-button {
+            background: white;
+            color: #222;
+        }
+        .movies {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 25px;
+            padding: 30px;
+        }
+        .movie {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 3px 12px #aaa;
+        }
+        .movie img {
+            width: 100%;
+            height: 430px;
+            object-fit: cover;
+            display: block;
+        }
+        .movie-info {
+            padding: 18px;
+        }
+        .movie-info h2 {
+            margin-top: 10px;
+            font-size: 23px;
+        }
+        .movie-info p {
+            line-height: 1.5;
+            color: #444;
+            font-size: 16px;
+        }
+        .language {
+            display: inline-block;
+            background: #222;
+            color: white;
+            padding: 5px 11px;
+            border-radius: 15px;
+            font-size: 12px;
+        }
+        .add-form {
+            display: none;
+            background: white;
+            padding: 25px;
+            margin: 25px auto;
+            max-width: 500px;
+            border-radius: 10px;
+            box-shadow: 0 3px 10px #aaa;
+        }
+        .add-form input,
+        .add-form textarea {
+            width: 100%;
+            padding: 12px;
+            margin: 8px 0;
+            font-size: 15px;
+        }
+        .add-form textarea {
+            height: 100px;
+        }
+        .add-movie-btn {
+            background: #222;
+            color: white;
+        }
+        .cancel-btn {
+            background: #ddd;
+        }
+        @media (max-width: 900px) {
+            .movies {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        @media (max-width: 600px) {
+            .movies {
+                grid-template-columns: 1fr;
+                padding: 15px;
+            }
+            header h1 {
+                font-size: 30px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>🎬 CineVerse</h1>
+        <p>
+            Discover exciting stories, unforgettable adventures
+            and your next favorite movie.
+        </p>
+        <input
+            type="text"
+            id="searchInput"
+            placeholder="Search for a movie..."
+            onkeyup="searchMovies()"
+        >
+        <br>
+        <button
+            class="add-button"
+            onclick="showForm()"
+        >
+            + Add Movie
+    </button>
+    </header>
+    <div
+        class="add-form"
+        id="addForm"
+    >
+        <h2>Add a New Movie</h2>
+        <input
+            type="text"
+            id="movieTitle"
+            placeholder="Movie Title"
+        >
+        <textarea
+            id="movieDescription"
+            placeholder="Movie Description"
+        ></textarea>
+        <input
+            type="text"
+            id="movieImage"
+            placeholder="Movie Poster Image URL"
+        >
+        <button
+            class="add-movie-btn"
+            onclick="addMovie()"
+        >
+            Add Movie
+        </button>
+        <button
+            class="cancel-btn"
+            onclick="hideForm()"
+        >
+            Cancel
+        </button>
+    </div>
+    <div
+        class="movies"
+        id="movieContainer"
+    >
+        <div class="movie">
+            <img
+                src="https://image.tmdb.org/t/p/w500/oYuLEt3zVCKq57qu2F8dT7NIa6f.jpg"
+                alt="Inception"
+            >
+            <div class="movie-info">
+                <span class="language">
+                    English
+                </span>
+                <h2>
+                    Inception
+                </h2>
+                <p>
+                    A skilled thief enters the dreams of others
+                    to steal valuable secrets.
+                </p>
+            </div>
+        </div>
+        <div class="movie">
+            <img
+                src="https://image.tmdb.org/t/p/w500/gEU2QniE6E77NI6lCU6MxlNBvIx.jpg"
+                alt="Interstellar"
+            >
+            <div class="movie-info">
+                <span class="language">
+                    English
+                </span>
+                <h2>
+                    Interstellar
+                </h2>
+                <p>
+                    Explorers travel through space in search
+                    of a new home for humanity.
+                </p>
+            </div>
+        </div>
+        <div class="movie">
+            <img
+                src="https://image.tmdb.org/t/p/w500/qJ2tW6WMUDux911r6m7haRef0WH.jpg"
+                alt="The Dark Knight"
+            >
+            <div class="movie-info">
+                <span class="language">
+                    English
+                </span>
+                <h2>
+                    The Dark Knight
+                </h2>
+                <p>
+                    Batman faces a dangerous criminal who
+                    creates chaos across Gotham City.
+                </p>
+            </div>
+        </div>
+        <div class="movie">
+            <img
+                src="https://image.tmdb.org/t/p/w500/ulzhLuWrPK07P1YkdWQLZnQh1JL.jpg"
+                alt="Avengers Endgame"
+            >
+            <div class="movie-info">
+                <span class="language">
+                    English
+                </span>
+                <h2>
+                    Avengers: Endgame
+                </h2>
+                <p>
+                    The Avengers join together for one final
+                    battle to save the universe.
+                </p>
+            </div>
+        </div>
+        <div class="movie">
+            <img
+                src="https://image.tmdb.org/t/p/w500/1pdfLvkbY9ohJlCjQH2CZjjYVvJ.jpg"
+                alt="Dune Part Two"
+            >
+            <div class="movie-info">
+                <span class="language">
+                    English
+                </span>
+                <h2>
+                    Dune: Part Two
+                </h2>
+                <p>
+                    Paul Atreides joins the Fremen and prepares
+                    to fight against his enemies.
+                </p>
+            </div>
+        </div>
+    </div>
+    <script>
+        function showForm() {
+            document
+                .getElementById("addForm")
+                .style.display = "block";
+        }
+        function hideForm() {
+            document
+                .getElementById("addForm")
+                .style.display = "none";
+        }
+        async function addMovie() {
+            const title =
+                document
+                    .getElementById("movieTitle")
+                    .value
+                    .trim();
+            const description =
+                document
+                    .getElementById("movieDescription")
+                    .value
+                    .trim();
+            const image =
+                document
+                    .getElementById("movieImage")
+                    .value
+                    .trim();
+            if (
+                !title ||
+                !description ||
+                !image
+            ) {
+                alert(
+                    "Please fill in all fields."
+                );
+                return;
+            }
+            try {
+                const response =
+                    await fetch(
+                        "/api/movies",
+                        {
+                            method: "POST",
+                            headers: {
+                                "Content-Type":
+                                    "application/json"
+                            },
+                            body:
+                                JSON.stringify({
+                                    title: title,
+                                    description:
+                                        description,
+                                    image: image
+                                })
+                        }
+                    );
+                if (!response.ok) {
+                    alert(
+                        "Could not add movie."
+                    );
+                    return;
+                }
+                alert(
+                    "Movie added successfully!"
+                );
+                document
+                    .getElementById("movieTitle")
+                    .value = "";
+                document
+                    .getElementById("movieDescription")
+                    .value = "";
+                document
+                    .getElementById("movieImage")
+                    .value = "";
+                hideForm();
+            }
+            catch (error) {
+                alert(
+                    "Could not connect to server."
+                );
+            }
+        }
+        function searchMovies() {
+            const input =
+                document
+                    .getElementById("searchInput")
+                    .value
+                    .toLowerCase()
+                    .trim();
+            const movies =
+                document
+                    .querySelectorAll(".movie");
+            movies.forEach(movie => {
+                const title =
+                    movie
+                        .querySelector("h2")
+                        .innerText
+                        .toLowerCase();
+                if (
+                    title.includes(input)
+                ) {
+                    movie.style.display = "";
+                }
+                else {
+                    movie.style.display = "none";
+                }
+            });
+        }
+    </script>
+</body>
+</html>
